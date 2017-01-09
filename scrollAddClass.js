@@ -1,34 +1,35 @@
 //scroll animation jquery Plugin
 +(function ($) {
-
     $.fn.scrollAnimation = function (setting) {
         //defaultsetting
         var defaultSetting = {
-            className: 'active',
-            offsetElement:this
+            className: 'active'
         }
         $.extend(defaultSetting, setting);
-        
-        //variables declearation
-        var $window =$(window),
-            _this    =$(this);
-        $window.scroll(addClass);
-        
-        //addclass function
-        function addClass(){
-            var scrollTopPosition = $window.scrollTop(),
-                elementOffsetTop  = $(defaultSetting.offsetElement).offset().top;
-                if(scrollTopPosition >= elementOffsetTop){
-                    //console.log("if");
-                    if(!_this.hasClass('active')){
-                        console.log("added Class");
-                        _this.addClass(defaultSetting.className);
+
+        try{
+          //variables declearation
+          console.log(this.selector);
+
+          var $window =$(window),
+              windowHeight = $window.height(),
+              _this    =$(this),
+              elementOffsetTop  = $(this.selector).offset().top,
+              revelAnimationOffset = elementOffsetTop - ( windowHeight*3/4 );
+              //console.log("windowHeight "+windowHeight+"  elementOffsetTop "+elementOffsetTop+ "  revelAnimationOffset "+revelAnimationOffset);
+              $window.scroll(addClass);
+              //addclass function
+              function addClass(){
+                var scrollTopPosition = $window.scrollTop();
+                    //console.log(scrollTopPosition);
+                    if(scrollTopPosition >= revelAnimationOffset){
+                      if(!_this.hasClass('active')){
+                          _this.addClass(defaultSetting.className);
+                      }
                     }
-                }
-                //console.log("scrollTop="+scrollTopPosition+" elementOffsetTop ="+elementOffsetTop+ " this="+_this);
+              }
+        }catch(e){
+          console.warn( "No element found for " + this.selector );
         }
     };
-
-})(jQuery)
-
-$('.cont-address .line').scrollAnimation({offsetElement:".map"});  // IT IS JUST LIKE WOW JS
+})(jQuery);
